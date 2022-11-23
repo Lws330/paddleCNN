@@ -1,0 +1,30 @@
+import paddle
+import numpy as np
+
+
+np.random.seed(100)
+data1 = np.random.rand(2, 3, 3, 3).astype('float32')
+data2 = np.arange(1, 13).reshape([-1, 3]).astype('float32')
+x1 = paddle.to_tensor(data1)
+drop11 = paddle.nn.Dropout(p=0.5, mode='downscale_in_infer')
+droped_train11 = drop11(x1)
+drop11.eval()
+droped_eval11 = drop11(x1)
+drop12 = paddle.nn.Dropout(p=0.5, mode='upscale_in_train')
+droped_train12 = drop12(x1)
+drop12.eval()
+droped_eval12 = drop12(x1)
+x2 = paddle.to_tensor(data2)
+drop21 = paddle.nn.Dropout(p=0.5, mode='downscale_in_infer')
+droped_train21 = drop21(x2)
+drop21.eval()
+droped_eval21 = drop21(x2)
+drop22 = paddle.nn.Dropout(p=0.5, mode='upscale_in_train')
+droped_train22 = drop22(x2)
+drop22.eval()
+droped_eval22 = drop22(x2)
+
+print('x1 {}, \n droped_train11 \n {}, \n droped_eval11 \n {}'.format(data1, droped_train11.numpy(), droped_eval11.numpy()))
+print('x1 {}, \n droped_train12 \n {}, \n droped_eval12 \n {}'.format(data1, droped_train12.numpy(), droped_eval12.numpy()))
+print('x2 {}, \n droped_train21 \n {}, \n droped_eval21 \n {}'.format(data2, droped_train21.numpy(), droped_eval21.numpy()))
+print('x2 {}, \n droped_train22 \n {}, \n droped_eval22 \n {}'.format(data2, droped_train22.numpy(), droped_eval22.numpy()))
